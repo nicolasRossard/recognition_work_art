@@ -10,11 +10,11 @@ from app.src.processing.tasks import generate_description_args
 from app.src.services.qdrant import QdrantService
 
 
-def init_collection(collection: str = COLLECTION_NAME):
+def init_collection(collection: str = COLLECTION_NAME, size: int = 1024, distance: Distance = Distance.COSINE):
     try:
         QdrantService().client.create_collection(
             collection_name=collection,
-            vectors_config=VectorParams(size=1024, distance=Distance.DOT),
+            vectors_config=VectorParams(size=size, distance=distance),
         )
     except:
         print("Collection already created")
