@@ -34,6 +34,7 @@ def init_images_os(processor_, model_, emb_model_):
 
     images = []
     for file in os.listdir(LIBRARY_IMAGES_DIR):
+
         filename = os.fsdecode(file)
         filepath = os.path.join(LIBRARY_IMAGES_DIR, filename)
         title = images_df[images_df['filename'] == filename]['title'].iloc[0]
