@@ -6,9 +6,9 @@ from app.src.routers.controller import Controller
 from app.src.services.authentification.auth import dp_user
 from app.src.services.tables.original_art import OriginalArtService
 
-art_database_router = APIRouter(prefix="/art", tags=["art"])
+original_art_router = APIRouter(prefix="/art", tags=["art"])
 
 
-@art_database_router.post("/", status_code=status.HTTP_201_CREATED)
+@original_art_router.post("/", status_code=status.HTTP_201_CREATED)
 def create_mission(art_information: OriginalArtCreate, db: dp_dependency, _: dp_user):
     return Controller(service=OriginalArtService(db)).post(art_information)
