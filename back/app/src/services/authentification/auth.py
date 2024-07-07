@@ -1,14 +1,14 @@
 from datetime import datetime, timedelta
-from typing import List, Optional, Annotated
+from typing import Annotated
 import bcrypt
 import jwt
 from fastapi import HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from app.config import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY, Role
-from app.src.service.tables.user import UserService
+from app.config import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY
+from app.src.services.tables.user import UserService
 from app.src.entities.schemas.user import DecodedUser
-from app.exceptions.exceptions_consts import INCORRECT_CREDENTIALS, USER_NOT_FOUND, BAD_ROLE
+from app.src.utils.const import INCORRECT_CREDENTIALS, USER_NOT_FOUND
 from app.src.entities.database import get_db
 
 # OAuth2 scheme for token-based authentication
@@ -20,21 +20,8 @@ class AuthService:
         self.session = session
         self.form_data = form_data
 
-    def check_user_role_authorization(self, user: DecodedUser, roles_list: Optional[List[str]] = None) -> None:
-        """
-        A function to check if the user role has authorization.
-
-        :param user: User object with a 'role' attribute.
-        :param roles_list: Optional list of roles to check against. If None, uses DEFAULT_ROLES.
-        :raises UserNotAuthorized: If the user's role is not in the authorized roles.
-        """
-        if roles_list is None:
-            roles_list = Role.DEFAULT
-
-        if user.role.lower() not in roles_list:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=BAD_ROLE)
-
-    def create_access_token(self, data: dict, expires_delta: timedelta):
+    @staticmethod
+    def create_access_token(data: dict, expires_delta: timedelta):
         """
         Create a JWT access token with the provided data.
 
@@ -49,7 +36,8 @@ class AuthService:
         encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
         return encoded_jwt
 
-    def decode_token(self, token: str):
+    @staticmethod
+    def decode_token(token: str):
         """
         Decode a JWT token and extract the username,id and role from it.
 
@@ -62,9 +50,8 @@ class AuthService:
         try:
             payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
             user = DecodedUser(
-                username=payload.get("username"),
-                role=payload.get("role").lower(),
                 id=payload.get("id"),
+                username=payload.get("username"),
             )
 
             if not user:

@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 
-from app.src.entities.models import OriginalArt as ModelOriginalArt
+from app.src.entities.models.original_art import OriginalArt as ModelOriginalArt
 from app.src.entities.schemas.original_art import OriginalArtCreate
 from app.src.services.tables.crud_abstract import CRUDAbstractService
 
