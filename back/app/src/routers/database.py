@@ -2,10 +2,13 @@ from fastapi import APIRouter, status
 
 from app.src.entities.database import dp_dependency
 from app.src.entities.schemas.original_art import OriginalArtCreate
+from app.src.routers.controller import Controller
 from app.src.services.authentification.auth import dp_user
+from app.src.services.tables.original_art import OriginalArtService
 
 art_database_router = APIRouter(prefix="/art", tags=["art"])
 
-@art_database_router.post("/", status_code=status.HTTP_201_CREATED)  # todo add responses into api
-def create_mission(art_information: OriginalArtCreate, db: dp_dependency, user: dp_user):
-    return Controller(service=MissionService(db)).post(art_information)
+
+@art_database_router.post("/", status_code=status.HTTP_201_CREATED)
+def create_mission(art_information: OriginalArtCreate, db: dp_dependency, _: dp_user):
+    return Controller(service=OriginalArtService(db)).post(art_information)

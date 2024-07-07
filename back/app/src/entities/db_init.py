@@ -1,10 +1,9 @@
 from app.src.entities import models
 from sqlalchemy.orm import Session
 from app.src.entities.database import engine
-from app.src.service.tables.user import UserService
+from app.src.services.tables.user import UserService
 from app.config import SuperUser
 from app.src.entities.schemas.user import UserCreate
-from app.src.service.authentification.user import UserRole
 
 
 def init_db(session: Session) -> None:
