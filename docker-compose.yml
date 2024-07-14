@@ -17,7 +17,7 @@ services:
     ports:
       - "${FAST_API_PORT}:3000"
     volumes:
-      - "./back:/code/fast"
+      - "./backend:/code/fast"
     networks:
       - intern
 
