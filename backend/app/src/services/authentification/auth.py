@@ -1,10 +1,12 @@
 from datetime import datetime, timedelta
 from typing import Annotated
+
 import bcrypt
 import jwt
 from fastapi import HTTPException, status, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
+
 from app.config import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY
 from app.src.services.tables.user import UserService
 from app.src.entities.schemas.user import DecodedUser
@@ -120,7 +122,7 @@ class AuthService:
             )
         access_token_expires = timedelta(minutes=float(ACCESS_TOKEN_EXPIRE_MINUTES))
         access_token = self.create_access_token(
-            {"id": user_data.id, "username": user_data.username, "role": user_data.role}, access_token_expires)
+            {"id": user_data.id, "username": user_data.username}, access_token_expires)
         return {"access_token": access_token, "token_type": "bearer"}
 
 

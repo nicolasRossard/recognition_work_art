@@ -1,7 +1,7 @@
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi import APIRouter
-from app.src.service.authentification.auth import AuthService
+from app.src.services.authentification.auth import AuthService
 from app.src.entities.database import dp_dependency
 
 token_router = APIRouter(prefix="/token", tags=["login"], )
