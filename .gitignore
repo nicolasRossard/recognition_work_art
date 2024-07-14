@@ -1,4 +1,6 @@
 .env
+.local_env
+qdrant_storage/
 .idea/
 __pycache__/
 gradio/app/tmp/
